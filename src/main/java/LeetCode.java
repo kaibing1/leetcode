@@ -2,10 +2,71 @@ import java.util.*;
 
 public class LeetCode {
     public static void main(String[] args) {
-        int[] input = new int[]{3,2,4};
-        int k = 6;
-        System.out.println(Arrays.toString(LeetCode.twoSum(input, k)));
+        int[] input = new int[]{3, 3, 3, 1, 2, 1, 1,2, 3, 3, 4};
+        System.out.println(new LeetCode().totalFruit(input));
     }
+    // 76
+    public String minWindow(String s, String t) {
+        int ans = -1;
+        int start = 0, end = 0;
+        return "";
+    }
+    // 904
+    public int totalFruit(int[] tree) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int ans = -1;
+        int start = 0, end = 0;
+        for (; end < tree.length; end++){
+            map.put(tree[end], map.getOrDefault(tree[end], 0)+1);
+            while (map.size() > 2){
+                int cnt = map.get(tree[start]);
+                if (cnt == 1){
+                    map.remove(tree[start]);
+                }else {
+                    map.put(tree[start], cnt-1);
+                }
+                start++;
+            }
+            ans = Math.max(end-start+1, ans);
+        }
+        return ans;
+    }
+
+    // 209 1
+    public int minSubArrayLen(int target, int[] nums) {
+        int size = Integer.MAX_VALUE;
+        for (int i=0; i < nums.length; i++){
+            int sum = 0;
+            for (int j=i; j < nums.length; j++){
+                sum += nums[j];
+                if (sum >= target){
+                    int tmp = j-i+1;
+                    if (tmp < size){
+                        size = tmp;
+                    }
+                }
+            }
+        }
+        return size==Integer.MAX_VALUE? 0:size;
+    }
+    // 209 2
+    public int minSubArrayLen2(int target, int[] nums) {
+        int size = Integer.MAX_VALUE;
+        int sum = 0;
+        int left = 0;
+        int length;
+        for (int j=0; j<nums.length; j++){
+            sum += nums[j];
+            while (sum >= target){
+                length = j - left + 1;
+                size = Math.min(size, length);
+                sum -= nums[left++];
+            }
+        }
+        return size==Integer.MAX_VALUE? 0:size;
+    }
+
+
     public static int[] twoSum (int[] numbers, int target) {
         // write code here
         HashMap<Integer, Integer> map = new HashMap<>();
