@@ -3,9 +3,23 @@ import java.util.*;
 public class LeetCode {
     public static void main(String[] args) {
         int[] input = new int[]{3, 3, 3, 1, 2, 1, 1,2, 3, 3, 4};
-        System.out.println(new LeetCode().totalFruit(input));
+        System.out.println(new LeetCode().isPowerOfTwo(8));
+    }
+    public boolean isPowerOfTwo(int n) {
+        if (n <= 0){
+            return false;
+        }
+        while (n > 2){
+            if (n % 2 == 1){
+                return false;
+            }else {
+                n = n / 2;
+            }
+        }
+        return true;
     }
     // 76
+    //TODO
     public String minWindow(String s, String t) {
         int ans = -1;
         int start = 0, end = 0;
