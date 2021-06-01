@@ -1,9 +1,14 @@
 import java.util.*;
 
 public class LeetCode {
+
     public static void main(String[] args) {
         int[] input = new int[]{3, 3, 3, 1, 2, 1, 1,2, 3, 3, 4};
         System.out.println(new LeetCode().isPowerOfTwo(8));
+    }
+    // 1744
+    public boolean[] canEat(int[] candiesCount, int[][] queries) {
+
     }
     public boolean isPowerOfTwo(int n) {
         if (n <= 0){
