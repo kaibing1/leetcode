@@ -3,9 +3,33 @@ import java.util.*;
 public class LeetCode {
 
     public static void main(String[] args) {
-        int[] input = new int[]{3, 3, 3, 1, 2, 1, 1,2, 3, 3, 4};
-        System.out.println(new LeetCode().isPowerOfTwo(8));
+        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
+        System.out.println(new LeetCode().findMaxLength(input));
     }
+    public int findMaxLength(int[] nums) {
+        int maxLength = 0;
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int counter = 0;
+        map.put(counter, -1);
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            if (num == 1) {
+                counter++;
+            } else {
+                counter--;
+            }
+            if (map.containsKey(counter)) {
+                int prevIndex = map.get(counter);
+                maxLength = Math.max(maxLength, i - prevIndex);
+            } else {
+                map.put(counter, i);
+            }
+        }
+        return maxLength;
+
+    }
+
     // 1744
     public boolean[] canEat(int[] candiesCount, int[][] queries) {
         int n = candiesCount.length;
