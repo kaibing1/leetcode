@@ -6,6 +6,20 @@ public class LeetCode {
         int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
         System.out.println(new LeetCode().findMaxLength(input));
     }
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        HashSet<ListNode> set = new HashSet<>();
+        while (headA!= null){
+            set.add(headA);
+            headA = headA.next;
+        }
+        while (headB!= null){
+            if (set.contains(headB)){
+                return headB;
+            }
+            headB = headB.next;
+        }
+        return null;
+    }
     public int findMaxLength(int[] nums) {
         int maxLength = 0;
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
