@@ -1,10 +1,21 @@
 import java.util.*;
 
 public class LeetCode {
-
+    // 279
+    public int numSquares(int n){
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <=n ; i++) {
+            int minn = Integer.MAX_VALUE;
+            for (int j = 1; j*j <= i; j++) {
+                minn = Math.min(minn, dp[i-j*j]);
+            }
+            dp[i] = minn+1;
+        }
+        return dp[n];
+    }
     public static void main(String[] args) {
-        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
-        System.out.println(new LeetCode().findMaxLength(input));
+//        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
+        System.out.println(new LeetCode().numSquares(4));
     }
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         HashSet<ListNode> set = new HashSet<>();
