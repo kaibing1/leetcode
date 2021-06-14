@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class LeetCode {
+
+
     // 279
     public int numSquares(int n){
         int[] dp = new int[n + 1];
@@ -13,6 +15,28 @@ public class LeetCode {
         }
         return dp[n];
     }
+    //46
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> rtl = new ArrayList<>();
+        backtrack(nums, new ArrayList<Integer>(), rtl);
+        return rtl;
+    }
+    public void backtrack(int[] nums, ArrayList<Integer> tmp, List<List<Integer>> rtl){
+        if (tmp.size() == nums.length){
+            rtl.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (tmp.contains(nums[i])){
+                continue;
+            }
+            tmp.add(nums[i]);
+            backtrack(nums, tmp, rtl);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+
+
     public static void main(String[] args) {
 //        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
         System.out.println(new LeetCode().numSquares(4));
