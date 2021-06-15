@@ -2,6 +2,19 @@ import java.util.*;
 
 public class LeetCode {
 
+    public static void main(String[] args) {
+//        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
+        System.out.println(new LeetCode().numSquares(4));
+    }
+    public int peakIndexInMountainArray(int[] arr) {
+        int target = -1;
+        for (int i = 1; i < arr.length-1; i++){
+            if (arr[i] > arr[i-1]){
+                target = i;
+            }
+        }
+        return target;
+    }
 
     // 279
     public int numSquares(int n){
@@ -37,10 +50,6 @@ public class LeetCode {
     }
 
 
-    public static void main(String[] args) {
-//        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
-        System.out.println(new LeetCode().numSquares(4));
-    }
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         HashSet<ListNode> set = new HashSet<>();
         while (headA!= null){
