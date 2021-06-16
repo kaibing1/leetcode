@@ -6,6 +6,70 @@ public class LeetCode {
 //        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
         System.out.println(new LeetCode().numSquares(4));
     }
+
+    //322
+    int sub(int[] coins, int amount,HashMap<Integer, Integer> map){
+        if (map.containsKey(amount)){
+            return map.get(amount);
+        }
+        if(amount == 0){
+            return 0;
+        }
+        if(amount < 0){
+            return -1;
+        }
+        int res = Integer.MAX_VALUE;
+        for(int i=0; i < coins.length; i++){
+            int subRes = sub(coins,amount-coins[i], map);
+            if (subRes == -1){
+                continue;
+            }
+            res = Math.min(res, 1+subRes);
+        }
+        if (res!=Integer.MAX_VALUE){
+            map.put(amount, res);
+        }else {
+            map.put(amount, -1);
+        }
+        return map.get(amount);
+    }
+    public int coinChange1(int[] coins, int amount) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        return  sub(coins, amount, map);
+    }
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0){
+            return 0;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[amount+1];
+        visited[amount] = true;
+        queue.offer(amount);
+
+        Arrays.sort(coins);
+        int step = 1;
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Integer head = queue.poll();
+                for(int coin : coins){
+                    int next = head - coin;
+                    if (next == 0){
+                        return  step;
+                    }
+                    if (next < 0){
+                        break;
+                    }
+                    if (!visited[next]){
+                        queue.offer(next);
+                        visited[next] = true;
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
     // 877
     public boolean stoneGame(int[] piles) {
         int length = piles.length;
