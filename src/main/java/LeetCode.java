@@ -1,8 +1,3 @@
-import com.sun.corba.se.spi.transport.ReadTimeouts;
-import sun.security.util.Length;
-
-import javax.xml.soap.Detail;
-import java.security.cert.TrustAnchor;
 import java.util.*;
 
 public class LeetCode {
@@ -192,6 +187,17 @@ public class LeetCode {
     }
 
 
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        while (cur != null){
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         HashSet<ListNode> set = new HashSet<>();
         while (headA!= null){
