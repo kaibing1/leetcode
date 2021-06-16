@@ -1,11 +1,197 @@
+import com.sun.corba.se.spi.transport.ReadTimeouts;
+import sun.security.util.Length;
+
+import javax.xml.soap.Detail;
+import java.security.cert.TrustAnchor;
 import java.util.*;
 
 public class LeetCode {
 
     public static void main(String[] args) {
-        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
-        System.out.println(new LeetCode().findMaxLength(input));
+//        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
+        System.out.println(new LeetCode().numSquares(4));
     }
+    // 877
+    public boolean stoneGame(int[] piles) {
+        int length = piles.length;
+        int[][] dp = new int[length][length];
+        for (int i = 0; i < length; i++) {
+            dp[i][i] = piles[i];
+        }
+        for (int i = length-2; i >= 0; i--) {
+            for (int j = i + 1; j < length; j++) {
+                dp[i][j] = Math.max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1]);
+            }
+        }
+        return dp[0][length-1] >= 0;
+    }
+    public boolean stoneGame1(int[] piles) {
+        return helper(piles, 0, piles.length-1) >= 0;
+    }
+    public int helper(int[] piles, int start, int end){
+        if (start == end){
+            return piles[start];
+        }
+        int left = piles[start] - helper(piles, start+1, end);
+        int right = piles[end] - helper(piles, start, end-1);
+        return Math.max(left, right);
+    }
+
+    // 486
+    public boolean PredictTheWinner(int[] nums) {
+        int len = nums.length;
+        int[][] dp = new int[len][len];
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = nums[i];
+        }
+        for (int i = len - 2; i >= 0; i--) {
+            for (int j = i+1; j < len; j++) {
+                dp[i][j] = Math.max(nums[i] - dp[i+1][j], nums[j]-dp[i][j-1]);
+            }
+        }
+        return dp[0][len-1]>=0;
+    }
+    public int total(int[] nums, int start, int end, int turn){
+        if (start==end){
+            return  nums[start]*turn;
+        }
+        int scoreStart = nums[start]*turn + total(nums, start+1, end, -turn);
+        int scoreEnd = nums[end]*turn + total(nums, start, end - 1, -turn);
+        return Math.max(scoreStart*turn, scoreEnd*turn)*turn;
+    }
+    public boolean PredictTheWinner2(int[] nums) {
+        return total(nums, 0, nums.length-1, 1) >= 0;
+    }
+
+
+
+    String plusOne(String s, int j){
+        char[] ch = s.toCharArray();
+        if (ch[j] == '9'){
+            ch[j] = '0';
+        }else {
+            ch[j] += 1;
+        }
+        return new String(ch);
+    }
+    String minusOne(String s, int j){
+        char[] ch = s.toCharArray();
+        if (ch[j] == '0'){
+            ch[j] = '9';
+        }else {
+            ch[j] -= 1;
+        }
+        return new String(ch);
+    }
+    // 752
+    public int openLock(String[] deadends, String target) {
+        Queue<String> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        Set<String> deads = new HashSet<>();
+        deads.addAll(Arrays.asList(deadends));
+        int step = 0;
+        q.offer("0000");
+        visited.add("0000");
+        while (!q.isEmpty()){
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                String cur = q.poll();
+                if (deads.contains(cur)){
+                    continue;
+                }
+                if (cur.equals(target)){
+                    return step;
+                }
+                for (int j = 0; j < 4; j++) {
+                    String up = plusOne(cur, j);
+                    if (!visited.contains(up)){
+                        q.offer(up);
+                        visited.add(up);
+                    }
+                    String down = minusOne(cur, j);
+                    if (!visited.contains(down)){
+                        q.offer(down);
+                        visited.add(down);
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+
+    // 111
+    public int minDepth(TreeNode root) {
+        LinkedList<TreeNode> q = new LinkedList<>();
+        if (root == null){
+            return 0;
+        }
+        q.add(root);
+        int depth = 1;
+        while (!q.isEmpty()){
+            int sc = q.size();
+            for (int i = 0; i < sc; i++){
+                TreeNode tmp = q.getFirst();
+                q.removeFirst();
+                if (tmp.left == null && tmp.right == null){
+                    return depth;
+                }
+                if (tmp.left != null){
+                    q.add(tmp.left);
+                }
+                if (tmp.right != null){
+                    q.add(tmp.right);
+                }
+            }
+            depth++;
+        }
+        return depth;
+    }
+
+    public int peakIndexInMountainArray(int[] arr) {
+        int target = -1;
+        for (int i = 1; i < arr.length-1; i++){
+            if (arr[i] > arr[i-1]){
+                target = i;
+            }
+        }
+        return target;
+    }
+
+    // 279
+    public int numSquares(int n){
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <=n ; i++) {
+            int minn = Integer.MAX_VALUE;
+            for (int j = 1; j*j <= i; j++) {
+                minn = Math.min(minn, dp[i-j*j]);
+            }
+            dp[i] = minn+1;
+        }
+        return dp[n];
+    }
+    //46
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> rtl = new ArrayList<>();
+        backtrack(nums, new ArrayList<Integer>(), rtl);
+        return rtl;
+    }
+    public void backtrack(int[] nums, ArrayList<Integer> tmp, List<List<Integer>> rtl){
+        if (tmp.size() == nums.length){
+            rtl.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (tmp.contains(nums[i])){
+                continue;
+            }
+            tmp.add(nums[i]);
+            backtrack(nums, tmp, rtl);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+
+
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         HashSet<ListNode> set = new HashSet<>();
         while (headA!= null){
