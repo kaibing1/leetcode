@@ -1,3 +1,6 @@
+import com.sun.corba.se.spi.transport.ReadTimeouts;
+
+import javax.xml.soap.Detail;
 import java.util.*;
 
 public class LeetCode {
@@ -6,6 +9,34 @@ public class LeetCode {
 //        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
         System.out.println(new LeetCode().numSquares(4));
     }
+    // 111
+    public int minDepth(TreeNode root) {
+        LinkedList<TreeNode> q = new LinkedList<>();
+        if (root == null){
+            return 0;
+        }
+        q.add(root);
+        int depth = 1;
+        while (!q.isEmpty()){
+            int sc = q.size();
+            for (int i = 0; i < sc; i++){
+                TreeNode tmp = q.getFirst();
+                q.removeFirst();
+                if (tmp.left == null && tmp.right == null){
+                    return depth;
+                }
+                if (tmp.left != null){
+                    q.add(tmp.left);
+                }
+                if (tmp.right != null){
+                    q.add(tmp.right);
+                }
+            }
+            depth++;
+        }
+        return depth;
+    }
+
     public int peakIndexInMountainArray(int[] arr) {
         int target = -1;
         for (int i = 1; i < arr.length-1; i++){
