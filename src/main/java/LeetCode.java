@@ -3,10 +3,85 @@ import java.util.*;
 public class LeetCode {
 
     public static void main(String[] args) {
-//        int[] input = new int[]{1,0,1,0,1,0,1,1,0,1};
-        System.out.println(new LeetCode().numSquares(4));
+        int[] input = new int[]{7,1,5,3,6,4};
+        System.out.println(new LeetCode().maxProfit_2(input));
     }
-
+    // 121
+    public int maxProfit0(int[] prices) {
+        int[][] dp = new int[prices.length][2];
+        for (int i = 0; i < prices.length; i++) {
+            if (i==0) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i];
+                continue;
+            }
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1]+prices[i]);
+            dp[i][1] = Math.max(dp[i-1][1], -prices[i]);
+        }
+        return dp[prices.length-1][0];
+    }
+    public int maxProfit01(int[] prices) {
+        int d_0 = 0, d_1 = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            d_0 = Math.max(d_0, d_1+prices[i]);
+            d_1 = Math.max(d_1, -prices[i]);
+        }
+        return d_0;
+    }
+    // 122
+    public int maxProfit_2(int[] prices) {
+        int d_0 = 0, d_1 = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            int temp = d_0;
+            d_0 = Math.max(d_0, d_1+prices[i]);
+            d_1 = Math.max(d_1, temp -prices[i]);
+        }
+        return d_0;
+    }
+    //188
+    public int maxProfit_4(int k, int[] prices) {
+        if (prices.length==0){
+           return 0;
+        }
+        int n = prices.length;
+        k = Math.min(k, n / 2);
+        int[] buy = new int[k + 1];
+        int[] sell = new int[k + 1];
+        buy[0] = -prices[0];
+        sell[0] = 0;
+        for (int i = 1; i <= k; i++) {
+            buy[i] = sell[i] = Integer.MIN_VALUE/2;
+        }
+        for (int i = 1 ; i < n; i++) {
+            buy[0] = Math.max(buy[0], sell[0] - prices[i]);
+            for (int j = 1; j <= k ; j++) {
+                buy[j] = Math.max(buy[j], sell[j]-prices[i]);
+                sell[j] = Math.max(sell[j], buy[j-1] + prices[i]);
+            }
+        }
+        return Arrays.stream(sell).max().getAsInt();
+    }
+    // 309
+    public int maxProfit_3(int[] prices) {
+        int d_0 = 0, d_1 = Integer.MIN_VALUE, d_pre = 0;
+        for (int price : prices) {
+            int tmp = d_0;
+            d_0 = Math.max(d_0, d_1 + price);
+            d_1 = Math.max(d_1, d_pre - price);
+            d_pre = tmp;
+        }
+        return d_0;
+    }
+    // 714
+    public int maxProfit(int[] prices, int fee) {
+        int d_0 = 0, d_1 = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            int temp = d_0;
+            d_0 = Math.max(d_0, d_1+prices[i]);
+            d_1 = Math.max(d_1, temp -prices[i]-fee);
+        }
+        return d_0;
+    }
     //322
     int sub(int[] coins, int amount,HashMap<Integer, Integer> map){
         if (map.containsKey(amount)){
