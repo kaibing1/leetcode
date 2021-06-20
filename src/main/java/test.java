@@ -3,10 +3,11 @@ import java.util.Iterator;
 
 public class test {
     public static void main(String[] args) {
-        String s = new String("a") + new String("b");
-        s.intern();
-        String s2 = "ab";
-        System.out.println(s == s2);
+        test.show(10);
+//        String s = new String("a") + new String("b");
+//        s.intern();
+//        String s2 = "ab";
+//        System.out.println(s == s2);
 //        ArrayList<String> arrayList = new ArrayList<String>();
 //        arrayList.add("Volvo");
 //        arrayList.add("BMW");
@@ -15,5 +16,9 @@ public class test {
 //            String next = iterator.next();
 //            System.out.println(next);
 //        }
+    }
+
+    public static void show(int i){
+        System.out.println(i);
     }
 }
