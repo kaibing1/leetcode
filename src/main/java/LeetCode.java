@@ -6,6 +6,33 @@ public class LeetCode {
         int[] input = new int[]{7,1,5,3,6,4};
         System.out.println(new LeetCode().maxProfit_2(input));
     }
+    // 1288
+    public int removeCoveredIntervals(int[][] intervals) {
+        Arrays.sort(intervals, (o1, o2) -> {
+            if (o1[0] == o2[0]){
+                return o2[1] - o1[1];
+            }else{
+                return o1[0] - o2[0];
+            }
+        });
+        int left = intervals[0][0];
+        int right = intervals[0][1];
+        int res = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            int[] intv = intervals[i];
+            if (left <= intv[0] && right >= intv[1]){
+                res++;
+            }
+            if (right >= intv[0] && right <= intv[1]){
+                right = intv[1];
+            }
+            if (right < intv[0]){
+                left = intv[0];
+                right = intv[1];
+            }
+        }
+        return intervals.length - res;
+    }
     // 121
     public int maxProfit0(int[] prices) {
         int[][] dp = new int[prices.length][2];
