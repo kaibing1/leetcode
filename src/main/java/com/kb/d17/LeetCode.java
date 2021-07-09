@@ -1,3 +1,5 @@
+package com.kb.d17;
+
 import java.util.*;
 
 public class LeetCode {
@@ -6,6 +8,46 @@ public class LeetCode {
         int[] input = new int[]{7,1,5,3,6,4};
         System.out.println(new LeetCode().maxProfit_2(input));
     }
+
+    // 652
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root){
+        Map<String, Integer> count = new HashMap<>();
+        List<TreeNode> ans = new ArrayList<>();
+        collect(root, ans, count);
+        return  ans;
+    }
+    public String collect(TreeNode node, List<TreeNode> ans, Map<String, Integer> count){
+        if (node==null) return "#";
+        String seral = node.val + "." + collect(node.left, ans, count)+ "."+collect(node.right, ans, count);
+        count.put(seral, count.getOrDefault(seral, 0)+1);
+        if (count.get(seral) == 2){
+            ans.add(node);
+        }
+        return seral;
+    }
+
+    // 654
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return build(nums, 0, nums.length-1);
+    }
+
+    public TreeNode build(int[] nums, int f, int t){
+        if (t < f){
+            return null;
+        }
+        int index = -1, maxVal = Integer.MIN_VALUE;
+        for (int i = f; i <= t; i++) {
+            if (maxVal < nums[i]){
+                maxVal = nums[i];
+                index = i;
+            }
+        }
+        TreeNode root = new TreeNode(maxVal);
+        root.left = build(nums, f, index-1);
+        root.right = build(nums, index+1, t);
+        return root;
+    }
+
     // 1288
     public int removeCoveredIntervals(int[][] intervals) {
         Arrays.sort(intervals, (o1, o2) -> {

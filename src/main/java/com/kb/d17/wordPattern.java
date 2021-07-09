@@ -1,3 +1,5 @@
+package com.kb.d17;
+
 import java.util.HashMap;
 
 public class wordPattern {

@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Iterator;
+package com.kb.d17;
 
 public class test {
     public static void main(String[] args) {
