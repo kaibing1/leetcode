@@ -1,3 +1,5 @@
+package com.kb.d17;
+
 import java.util.*;
 
 public class LeetCode {
