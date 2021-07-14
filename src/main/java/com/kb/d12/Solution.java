@@ -1,11 +1,33 @@
 package com.kb.d12;
 
-import java.util.Stack;
+import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
-        String s = "HG[3|B[2|CA]]F";
-        System.out.println(new Solution().compress(s));
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int x = scanner.nextInt();
+        int y = scanner.nextInt();
+        int[] scores = new int[n];
+        for (int i = 0; i < n; i++) {
+            scores[i] = scanner.nextInt();
+        }
+        Arrays.sort(scores);
+        List<Integer> rtl = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int threshold = scores[i];
+            int win = n - i -1;
+            int fail = i + 1;
+            if (win>=x && win <= y && fail>=x && fail <= y){
+                rtl.add(threshold);
+            }
+        }
+        if (rtl.size() == 0){
+            System.out.println(-1);
+        }else {
+            System.out.println(rtl.get(0));
+        }
+
     }
     public String compress(String s){
 
