@@ -106,4 +106,24 @@ public class Solution {
 //        return true;
 //    }
 
+    public List<String> restoreIpAddresses(String s) {
+        return null;
+    }
+    public boolean flag = true;
+    public void show(){
+        System.out.println("Starting");
+        while (flag){
+
+        }
+        System.out.println("ending");
+    }
+    public static void main(String[] args) throws InterruptedException {
+        Solution solution = new Solution();
+        synchronized (solution){
+            System.out.println("hello");
+        }
+        new Thread(solution::show, "t1").start();
+        Thread.sleep(1000);
+        solution.flag = false;
+    }
 }
