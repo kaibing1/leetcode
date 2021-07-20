@@ -21,26 +21,9 @@ class TreeNode{
         this.right = right;
     }
 }
-//class Node {
-//    public int val;
-//    public List<Node> children;
-//
-//    public Node() {}
-//
-//    public Node(int _val) {
-//        val = _val;
-//    }
-//
-//    public Node(int _val, List<Node> _children) {
-//        val = _val;
-//        children = _children;
-//    }
-//}
 class Node {
     public int val;
-    public Node left;
-    public Node right;
-    public Node next;
+    public List<Node> children;
 
     public Node() {}
 
@@ -48,13 +31,30 @@ class Node {
         val = _val;
     }
 
-    public Node(int _val, Node _left, Node _right, Node _next) {
+    public Node(int _val, List<Node> _children) {
         val = _val;
-        left = _left;
-        right = _right;
-        next = _next;
+        children = _children;
     }
 }
+//class Node {
+//    public int val;
+//    public Node left;
+//    public Node right;
+//    public Node next;
+//
+//    public Node() {}
+//
+//    public Node(int _val) {
+//        val = _val;
+//    }
+//
+//    public Node(int _val, Node _left, Node _right, Node _next) {
+//        val = _val;
+//        left = _left;
+//        right = _right;
+//        next = _next;
+//    }
+//}
 public class Solution {
     // 102
     public List<List<Integer>> levelOrder(TreeNode root){
@@ -208,30 +208,79 @@ public class Solution {
 //            }
 //        }
 //    }
-    public Node connect(Node root) {
-        Queue<Node> queue = new LinkedList<>();
-        if (root == null){
-            return null;
-        }
+//    public Node connect(Node root) {
+//        Queue<Node> queue = new LinkedList<>();
+//        if (root == null){
+//            return null;
+//        }
+//        queue.offer(root);
+//        while (!queue.isEmpty()){
+//            int count = queue.size();
+//            Node pre = null;
+//            Node cur = null;
+//            for (int i = 0; i < count; i++) {
+//                if (i==0){
+//                    pre = queue.poll();
+//                    if (pre.left!= null) queue.add(pre.left);
+//                    if (pre.right!=null) queue.add(pre.right);
+//                }else {
+//                    cur = queue.poll();
+//                    pre.next = cur;
+//                    pre = cur;
+//                    if (cur.left!=null) queue.add(cur.left);
+//                    if (cur.right!=null) queue.add(cur.right);
+//                }
+//            }
+//        }
+//        return root;
+//    }
+    // 559
+
+//    public int maxDepth(TreeNode root) {
+//        if (root==null) return 0;
+//        return getDepth(root);
+//    }
+//    public int getDepth(TreeNode node){
+//        if (node == null) return 0;
+//        int left = getDepth(node.left);
+//        int right = getDepth(node.right);
+//        int res = Math.max(left, right)+1;
+//        return res;
+//    }
+    public int maxDepth(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        if (root==null) return 0;
         queue.offer(root);
+        int depth = 0;
         while (!queue.isEmpty()){
-            int count = queue.size();
-            Node pre = null;
-            Node cur = null;
-            for (int i = 0; i < count; i++) {
-                if (i==0){
-                    pre = queue.poll();
-                    if (pre.left!= null) queue.add(pre.left);
-                    if (pre.right!=null) queue.add(pre.right);
-                }else {
-                    cur = queue.poll();
-                    pre.next = cur;
-                    pre = cur;
-                    if (cur.left!=null) queue.add(cur.left);
-                    if (cur.right!=null) queue.add(cur.right);
-                }
+            int size = queue.size();
+            depth++;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left!= null) queue.offer(node.left);
+                if (node.right!=null) queue.offer(node.right);
             }
         }
-        return root;
+        return depth;
+    }
+    // 222
+    public int countNodes(TreeNode root) {
+        if (root==null) return 0;
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        int leftHeight = 0, rightHeight=0;
+        while (left != null){
+            leftHeight++;
+            left = left.left;
+        }
+        while (right!=null){
+            rightHeight++;
+            right = right.right;
+        }
+        if (leftHeight == rightHeight)
+        {
+            return (2 << leftHeight) - 1;
+        }
+        return countNodes(root.left) + countNodes(root.right) + 1;
     }
 }
