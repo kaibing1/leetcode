@@ -2,6 +2,8 @@ package com.kb.tree;
 
 
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -282,5 +284,38 @@ public class Solution {
             return (2 << leftHeight) - 1;
         }
         return countNodes(root.left) + countNodes(root.right) + 1;
+    }
+    public void quick(int[] nums, int start, int end){
+        if (start > end){
+            return;
+        }
+        int l = start, r=end;
+        int base = nums[start];
+        while (l < r){
+            while (r > l && nums[r] >= base){
+                r--;
+            }
+            while (r>l && nums[l] <= base){
+                l++;
+            }
+            if (l < r){
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+            }
+        }
+        nums[start] = nums[l];
+        nums[l] = base;
+        quick(nums, start, l-1);
+        quick(nums, l+1, end);
+    }
+    @Test
+    public void testQuick(){
+        int[] nums = {-1, 10,3, 4, 1};
+        Solution solution = new Solution();
+        solution.quick(nums, 0, nums.length-1);
+        for (int i = 0; i < nums.length; i++) {
+            System.out.println(nums[i]);
+        }
     }
 }
