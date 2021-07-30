@@ -1,10 +1,11 @@
 package com.kb.backtracking;
 
+import org.junit.Test;
+import sun.misc.Unsafe;
+
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
     // 17
@@ -105,5 +106,167 @@ public class Solution {
 //        }
 //        return true;
 //    }
+
+//    public List<String> restoreIpAddresses(String s) {
+//        return null;
+//    }
+//    public boolean flag = true;
+//    public void show(){
+//        System.out.println("Starting");
+//        while (flag){
+//
+//        }
+//        System.out.println("ending");
+//    }
+//    public static void main(String[] args) throws InterruptedException {
+//        Solution solution = new Solution();
+//        synchronized (solution){
+//            System.out.println("hello");
+//        }
+//        new Thread(solution::show, "t1").start();
+//        Thread.sleep(1000);
+//        solution.flag = false;
+//    }
+    // 491
+//    List<List<Integer>> results;
+//    List<Integer> path;
+//
+//    public List<List<Integer>> findSubsequences(int[] nums) {
+//        results = new ArrayList<>();
+//        path = new ArrayList<>();
+//        backTracking(nums, 0);
+//        return results;
+//    }
+//
+//    public void backTracking(int[] nums, int startIndex){
+//        if (path.size() > 1){
+//            results.add(new ArrayList<>(path));
+//        }
+//
+//        HashSet<Integer> records = new HashSet<>();
+//        for (int i = startIndex; i < nums.length; i++) {
+//            if ((path.size() != 0 && path.get(path.size()-1) > nums[i]) || records.contains(nums[i])){
+//                continue;
+//            }
+//            records.add(nums[i]);
+//            path.add(nums[i]);
+//            backTracking(nums, i+1);
+//            path.remove(path.size()-1);
+//        }
+//    }
+    // 46
+//    List<List<Integer>> results;
+//    List<Integer> path;
+//    public List<List<Integer>> permute(int[] nums) {
+//        results = new ArrayList<>();
+//        path = new ArrayList<>();
+//        backTracking(nums);
+//        return results;
+//    }
+//    public void backTracking(int[] nums){
+//        if (path.size() == nums.length){
+//            results.add(new ArrayList<>(path));
+//            return;
+//        }
+//
+//        for (int i = 0; i < nums.length; i++) {
+//            if (path.contains(nums[i])){
+//                continue;
+//            }
+//            path.add(nums[i]);
+//            backTracking(nums);
+//            path.remove(path.size()-1);
+//        }
+//    }
+    // 47
+//    List<List<Integer>> results;
+//    List<Integer> path;
+//    public List<List<Integer>> permuteUnique(int[] nums) {
+//        results = new ArrayList<>();
+//        path = new ArrayList<>();
+//        Arrays.sort(nums);
+//        boolean[] flag = new boolean[nums.length];
+//        backTracking(nums, flag);
+//        return results;
+//    }
+//    public void backTracking(int[] nums, boolean[] flag){
+//        if (path.size() == nums.length){
+//            results.add(new ArrayList<>(path));
+//            return;
+//        }
+//
+//        for (int i = 0; i < nums.length; i++) {
+//            if (i > 0 && nums[i-1] == nums[i] && !flag[i - 1]){
+//                continue;
+//            }
+//            path.add(nums[i]);
+//            flag[i] = true;
+//            backTracking(nums, flag);
+//            path.remove(path.size()-1);
+//            flag[i] = false;
+//        }
+//    }
+//    @Test
+//    public void  algo47(){
+//        int[] nums = {1, 1, 3};
+//        Solution solution = new Solution();
+//        solution.permuteUnique(nums);
+//    }
+    //51
+    List<List<String>> result;
+    public void algo51(){
+        String s = "abc";
+
+    }
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> solutions = new ArrayList<List<String>>();
+        int[] queens = new int[n];
+        Arrays.fill(queens, -1);
+        Set<Integer> columns = new HashSet<>();
+        Set<Integer> diagonals1 = new HashSet<>();
+        Set<Integer> diagonals2 = new HashSet<>();
+        backTracking(solutions, queens, n, 0, columns, diagonals1, diagonals2);
+        return solutions;
+    }
+    private void backTracking(List<List<String>> solutions, int[] queens, int n, int row, Set<Integer> columns, Set<Integer> diagonals1, Set<Integer> diagonals2){
+        if(row==n){
+            List<String> board = generateBoard(queens, n);
+            solutions.add(board);
+        }else{
+            for (int i = 0; i < n; i++) {
+                if (columns.contains(i)){
+                    continue;
+                }
+                int diagonal1 = row - i;
+                if (diagonals1.contains(diagonal1)){
+                    continue;
+                }
+
+                int diagonal2 = row+i;
+                if (diagonals2.contains(diagonal2)){
+                    continue;
+                }
+                queens[row] = i;
+                columns.add(i);
+                diagonals1.add(diagonal1);
+                diagonals2.add(diagonal2);
+                backTracking(solutions, queens, n, row+1, columns, diagonals1, diagonals2);
+                queens[row] = -1;
+                columns.remove(i);
+                diagonals1.remove(diagonal1);
+                diagonals2.remove(diagonal2);
+            }
+        }
+    }
+    public List<String> generateBoard(int[] queens, int n) {
+        List<String> board = new ArrayList<String>();
+        for (int i = 0; i < n; i++) {
+            char[] row = new char[n];
+            Arrays.fill(row, '.');
+            row[queens[i]] = 'Q';
+            board.add(new String(row));
+        }
+        return board;
+    }
 
 }
