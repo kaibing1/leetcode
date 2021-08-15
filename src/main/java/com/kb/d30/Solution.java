@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class Solution {
     List<String> res;
@@ -32,9 +35,13 @@ public class Solution {
     }
     @Test
     public void test(){
-        String s = "abc";
-        for (String s1 : new Solution().permutation(s)) {
-            System.out.println(s1);
-        }
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(50, 30, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(5));
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("hello world");
+            }
+        });
+
     }
 }
