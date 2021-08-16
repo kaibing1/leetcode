@@ -1,5 +1,7 @@
 package com.kb.d12;
 
+import org.junit.Test;
+
 import java.util.*;
 
 public class Solution {
@@ -66,5 +68,28 @@ public class Solution {
         }
         return new String(rtl);
     }
-
+    @Test
+    public void test101(){
+        int n, x, y;
+        Scanner scanner = new Scanner(System.in);
+        n = scanner.nextInt();
+        x = scanner.nextInt();
+        y = scanner.nextInt();
+        int[] d = new int[n];
+        for (int i = 0; i < n; i++) {
+            d[i] = scanner.nextInt();
+        }
+        Arrays.sort(d);
+        int left = 0;
+        int right = n;
+        for (int i = 0; i < n; i++) {
+            int num = d[i];
+            left++;
+            right--;
+            if (left<=y && left>=x && right>= x && right<= y){
+                System.out.println(num);
+            }
+        }
+        System.out.println(-1);
+    }
 }

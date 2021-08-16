@@ -71,4 +71,5 @@ public class Solution {
         Solution solution = new Solution();
         System.out.println(solution.exist(board, word));
     }
+
 }
