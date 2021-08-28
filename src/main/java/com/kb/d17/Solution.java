@@ -1,5 +1,6 @@
 package com.kb.d17;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +11,24 @@ import java.util.Map;
  * @Date: Created in 20:38 2021/6/17
  */
 public class Solution {
+    public int numOfStrings(String[] patterns, String word) {
+        int res = 0;
+        for (int i = 0; i < patterns.length; i++) {
+            if (word.contains(patterns[i])){
+                res++;
+            }
+        }
+        return res;
+    }
+    public int[] rearrangeArray(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length-1; i+=2) {
+            int tmp = nums[i];
+            nums[i] = nums[i+1];
+            nums[i+1] = tmp;
+        }
+        return nums;
+    }
 
     public static void main(String[] args) {
         int[] nums = new int[]{1, 2, 3, 3, 3, 4, 5};

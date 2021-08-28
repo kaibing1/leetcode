@@ -11,7 +11,7 @@ public class Sort {
         }
         int base = nums[start];
         int i = start, j = end;
-        if (i < j){
+        while (i < j){
             while (nums[j]>= base && j > i){
                 j--;
             }
@@ -31,7 +31,7 @@ public class Sort {
     }
     @Test
     public void testQuickSort(){
-        int[] nums = {1, -1, 10, 8, 5};
+        int[] nums = {5,4,4,5,62,99,98,54,56,17,18,23,34,15,35,25,53,51};;
         Sort sort = new Sort();
         sort.quickSort(nums, 0, nums.length-1);
         for (int i = 0; i < nums.length; i++) {

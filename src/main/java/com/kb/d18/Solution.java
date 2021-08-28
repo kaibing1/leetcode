@@ -2,10 +2,7 @@ package com.kb.d18;
 
 import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
     // 2106
@@ -47,7 +44,59 @@ public class Solution {
 //        return new ArrayList<>(map.values());
 //    }
     public static void main(String[] args) {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("hello world");
+        String s = "20000000000000000000";
+        System.out.println(new Solution().myAtoi(s));
     }
+
+    public int myAtoi(String s) {
+        s = s.trim();
+        long ans = 0;
+        int flag = 1;
+        int i = 0;
+        if (s.startsWith("-")){
+            flag = -1;
+            i = 1;
+        }else if (s.startsWith("+")){
+            i = 1;
+        }
+        while (i < s.length()){
+            if (s.charAt(i) == '0'){
+                i++;
+            }else {
+                break;
+            }
+        }
+        Stack<Integer> stack = new Stack<>();
+        for (;i<s.length();i++) {
+            char c = s.charAt(i);
+            if (c >'9' || c < '0'){
+                break;
+            }
+            stack.push(c - '0');
+        }
+        long f = 1;
+        while (!stack.isEmpty()){
+            ans +=  f * stack.pop();
+            f *= 10;
+            if (f > Integer.MAX_VALUE && !stack.isEmpty()){
+                if (flag == 1){
+                    ans = Integer.MAX_VALUE;
+                }else {
+                    ans = -(long) Integer.MIN_VALUE;
+                }
+                break;
+            }
+            if (flag==1 && ans > Integer.MAX_VALUE){
+                ans = Integer.MAX_VALUE;
+                break;
+            }else if (flag == -1 && ans>-(long) Integer.MIN_VALUE){
+                ans = -(long) Integer.MIN_VALUE;
+                break;
+            }
+        }
+        ans *= flag;
+
+        return (int) ans;
+    }
+
 }

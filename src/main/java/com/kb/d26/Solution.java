@@ -23,4 +23,62 @@ public class Solution {
         }
         return res;
     }
+    public int[] getMaxMatrix(int[][] matrix){
+        int[] ans = new int[4];
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[] b = new int[n];
+        int sum = 0;
+        int maxSum = Integer.MIN_VALUE;
+        int lx = 0;
+        int ly = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                b[j] = 0;
+            }
+            for (int j = i; j < m; j++) {
+                sum = 0;
+                for (int k = 0; k < n; k++) {
+                    b[k] += matrix[j][k];
+                    if (sum > 0){
+                        sum += b[k];
+                    }else {
+                        sum = b[k];
+                        lx = i;
+                        ly = k;
+                    }
+                    if (sum > maxSum){
+                        maxSum = sum;
+                        ans[0] = lx;
+                        ans[1] = ly;
+                        ans[2] = j;
+                        ans[3] = k;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int numRescueBoats(int[] people, int limit) {
+        int res = 0;
+        int right = people.length-1;
+        int left = 0;
+        Arrays.sort(people);
+        while (left <= right){
+            if (left == right){
+                res++;
+                break;
+            }
+            if (people[left] + people[right] > limit){
+                res++;
+                right--;
+            }else {
+                res++;
+                left++;
+                right--;
+            }
+        }
+        return res;
+    }
 }

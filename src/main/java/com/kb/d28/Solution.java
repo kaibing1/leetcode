@@ -1,5 +1,7 @@
 package com.kb.d28;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.REUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,5 +106,15 @@ public class Solution {
             n--;
         }
         return !flag? res:-res;
+    }
+
+    public int[] runningSum(int[] nums) {
+        int[] ans = new int[nums.length];
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            ans[i] = sum;
+        }
+        return ans;
     }
 }

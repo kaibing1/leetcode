@@ -1,5 +1,7 @@
 package com.kb.d21;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,4 +92,70 @@ public class Solution {
         memo.put(root, res);
         return res;
     }
+    @Test
+    public void cTest(){
+        char[] chars = new char[]{'a','a','b','b','b','b','b','b','b','b','b','b','b','b'};
+        System.out.println(new Solution().compress(chars));
+    }
+    public int compress(char[] chars) {
+        StringBuffer buffer = new StringBuffer();
+        int i = 0;
+        while (i < chars.length){
+            char c = chars[i];
+            int j = 0;
+            while (j+i < chars.length && chars[j+i] == c){
+                j++;
+            }
+            buffer.append(c);
+            if (j != 1){
+                int tmp = j;
+                StringBuffer tBuffer = new StringBuffer();
+                while (tmp > 0){
+                    tBuffer.append(tmp % 10);
+                    tmp /= 10;
+                }
+                buffer.append(tBuffer.reverse());
+            }
+            i = j+i;
+        }
+        String s = buffer.toString();
+        for (int j = 0; j < s.length(); j++) {
+            chars[j] = s.charAt(j);
+        }
+        for (int j = 0; j < chars.length; j++) {
+            System.out.println(chars[j]);
+        }
+        return s.length();
+    }
+    @Test
+    public void lpsTest(){
+        String s = "cbbd";
+        Solution solution = new Solution();
+        System.out.println(solution.longestPalindromeSubseq(s));
+    }
+    public int longestPalindromeSubseq(String s) {
+        int len = s.length();
+        int[][] dp = new int[len][len];
+        for (int i = len-1; i >= 0; i--) {
+            dp[i][i] = 1;
+            for (int j = i+1; j < len; j++) {
+                if (s.charAt(i) == s.charAt(j)){
+                    dp[i][j] = dp[i+1][j-1] + 2;
+                }else {
+                    dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[0][len-1];
+    }
+//    public int candy(int[] ratings) {
+//        int len = ratings.length;
+//        int[] ans = new int[len];
+//        for (int i = 0; i < len; i++) {
+//            ans[i] = 1;
+//        }
+//        for (int i = 0; i < len; i++) {
+//
+//        }
+//    }
 }

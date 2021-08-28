@@ -16,6 +16,7 @@ public class Main1 {
             w[i] = sc.nextInt();
         }
         System.out.println(f[1][n][0]);
+        int i = Integer.valueOf("1").intValue();
     }
     public static int dp(int l, int r, int p){
         if (l > r) return 0;
@@ -28,6 +29,5 @@ public class Main1 {
         }
         f[l][r][p] = ret;
         return ret;
-
     }
 }

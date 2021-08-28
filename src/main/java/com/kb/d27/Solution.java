@@ -1,5 +1,12 @@
 package com.kb.d27;
 
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
+
 public class Solution {
     public String longestPalindrome(String s) {
         int len = s.length();
@@ -77,5 +84,114 @@ public class Solution {
             }
         }
         return dp[n][m];
+    }
+
+    public int leastBricks(List<List<Integer>> wall) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (List<Integer> list : wall) {
+            int sum = 0;
+            int size = list.size();
+            for (int i = 0; i < size-1; i++) {
+                sum += list.get(i);
+                map.put(sum, map.getOrDefault(sum, 0)+1);
+            }
+        }
+        int ans = Integer.MIN_VALUE;
+        for (Integer integer : map.keySet()) {
+            ans = Math.max(ans,map.get(integer));
+        }
+        return wall.size() - ans;
+    }
+
+//    public boolean canReach(int[] arr, int start) {
+//        boolean[] visited = new boolean[arr.length];
+//        return dfs(arr, start, visited);
+//    }
+//
+//    private boolean dfs(int[] arr, int start, boolean[] visited){
+//        int x = arr[start];
+//        if (x == 0) return true;
+//        if (!visited[start]){
+//            visited[start] = true;
+//            if (start - arr[start] >= 0 && dfs(arr, start - arr[start], visited)) return true;
+//            if (start+arr[start]<arr.length && dfs(arr, start + arr[start], visited)) return true;
+//        }
+//        return false;
+//    }
+
+//    public boolean canJump(int[] nums) {
+//        return dfs(nums, 0);
+//    }
+//    public boolean dfs(int[] nums, int start){
+//        if (start == nums.length-1){
+//            return true;
+//        }
+//        int len = nums[start];
+//        boolean flag = false;
+//        for (int i = 1; i <= len; i++) {
+//            if (start+i < nums.length){
+//                flag = flag ||dfs(nums, start+i);
+//            }
+//        }
+//        return flag;
+//    }
+    @Test
+    public void cjTest(){
+        Solution solution = new Solution();
+        int[] nums = {1, 2, 3};
+        System.out.println(solution.canJump(nums));
+    }
+    public boolean canJump(int[] nums) {
+        int maxJump = nums[0];
+        for (int i = 1; i <= maxJump && i < nums.length; i++) {
+            maxJump = Math.max(maxJump, nums[i]+i);
+        }
+        return maxJump >= nums.length-1;
+    }
+    public boolean isValidSerialization(String preorder) {
+        Stack<String> stack = new Stack<>();
+        String[] data = preorder.split(",");
+        for (String s : data) {
+            stack.push(s);
+            while (stack.size()>=3){
+                String s1 = stack.pop();
+                String s2 = stack.pop();
+                String s3 = stack.pop();
+                if ("#".equals(s1) && "#".equals(s2) && !"#".equals(s3)){
+                    stack.push("#");
+                }else {
+                    stack.push(s3);
+                    stack.push(s2);
+                    stack.push(s1);
+                    break;
+                }
+            }
+
+        }
+        return stack.size() == 1 && "#".equals(stack.peek());
+    }
+
+    public boolean judgeSquareSum(int c) {
+        for(long a = 0; a * a <= c; a++){
+            double b = Math.sqrt(c - a*a);
+            if (b == (int)b){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int jump(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 1; j < nums[i]+1; j++) {
+                if (i + j < nums.length){
+                    dp[i+j] = Math.min(dp[i+j], 1+dp[i]);
+                }
+            }
+        }
+        return dp[nums.length-1];
     }
 }
