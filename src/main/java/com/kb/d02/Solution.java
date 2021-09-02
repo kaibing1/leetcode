@@ -1,8 +1,13 @@
 package com.kb.d02;
 
+import com.kb.algorithm.utils.ListNode;
 import org.junit.Test;
 
+import java.security.Provider;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Stack;
 
 public class Solution {
     public int[] singleNumbers(int[] nums) {
@@ -121,4 +126,111 @@ public class Solution {
 //            }
 //        }
 //    }
+
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode fastNode = head;
+        int index = k;
+        while (--index > 0){
+            fastNode = fastNode.next;
+        }
+        ListNode cur = head;
+        while (fastNode != null){
+            fastNode = fastNode.next;
+            cur = cur.next;
+        }
+        return cur;
+    }
+    @Test
+    public void crsTest(){
+        Solution solution = new Solution();
+        int[] nums = {0};
+        int lower = 0;
+        int upper = 0;
+        System.out.println(solution.countRangeSum(nums, lower, upper));
+    }
+    public int countRangeSum(int[] nums, int lower, int upper) {
+        int len = nums.length;
+        long[] preSum = new long[len];
+        preSum[0] = nums[0];
+        for (int i = 1; i < len; i++) {
+            preSum[i] = preSum[i-1] + nums[i];
+        }
+        long pre = 0;
+        long cur = 0;
+        int ans = 0;
+        for (int i = 1; i <= len; i++) {
+            for (int j = 0; j+i <= len; j++) {
+                if (j == 0){
+                    pre = 0;
+                }else {
+                    pre = preSum[j-1];
+                }
+                cur = preSum[j+i-1];
+                long val = cur - pre;
+                if (val <= upper && val >= lower){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+    public int calPoints(String[] ops) {
+        LinkedList<Integer> list = new LinkedList<>();
+        for (String op : ops) {
+            if ("C".equals(op)){
+                list.removeLast();
+            }else if ("D".equals(op)){
+                int val = list.getLast();
+                list.removeLast();
+                list.addLast(val*2);
+            }else if ("+".equals(op)){
+                int v1 = list.get(list.size()-1);
+                int v2 = list.get(list.size()-2);
+                list.addLast(v1+v2);
+            }else {
+                list.addLast(Integer.valueOf(op));
+            }
+        }
+        int ans = 0;
+        for (Integer integer : list) {
+            ans += integer;
+        }
+        return ans;
+    }
+    class ServerState{
+        int idx;
+        int weight;
+        int ending;
+        public ServerState(int i, int w, int e){
+            idx = i;
+            weight = w;
+            ending = e;
+        }
+    }
+    public int[] assignTasks(int[] servers, int[] tasks){
+        int n = servers.length, m = tasks.length;
+        int[] ans = new int[m];
+        PriorityQueue<ServerState> ready = new PriorityQueue<>((a,b)-> (a.weight==b.weight)? a.idx-b.idx:a.weight-b.weight);
+        for (int i = 0; i < n; i++) {
+            ready.offer(new ServerState(i, servers[i], 0));
+        }
+        PriorityQueue<ServerState> busy = new PriorityQueue<>((a, b)-> (a.ending == b.ending)? ((a.weight==b.weight)?a.idx-b.idx:a.weight-b.weight):a.ending-b.weight);
+        for (int i = 0; i < m; i++) {
+            while (!busy.isEmpty() && busy.peek().ending <= i){
+                ready.offer(busy.poll());
+            }
+            if (ready.isEmpty()){
+                ServerState top = busy.poll();
+                top.ending += tasks[i];
+                ans[i]=top.idx;
+                busy.offer(top);
+            }else {
+                ServerState serv = ready.poll();
+                serv.ending = i + tasks[i];
+                ans[i] = serv.idx;
+                busy.offer(serv);
+            }
+        }
+        return ans;
+    }
 }
